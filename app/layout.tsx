@@ -23,7 +23,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={cx(sfPro.variable, inter.variable, raleway.variable)}>
-        <div className={cx("fixed h-screen w-full ", styles.background)} />
+        <div className={cx("fixed w-full ", styles.background)} />
         <Suspense fallback="...">
           {/* @ts-expect-error Server Component */}
           <Nav />
