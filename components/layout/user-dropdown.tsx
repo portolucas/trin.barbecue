@@ -5,9 +5,9 @@ import { signOut } from "next-auth/react";
 import { LogOut } from "lucide-react";
 import Popover from "@/components/shared/popover";
 import Image from "next/image";
-import { Session } from "next-auth";
+import { SessionProps } from "@/app/types";
 
-export default function UserDropdown({ session }: { session: Session }) {
+export default function UserDropdown({ session }: SessionProps) {
   const { email, image } = session?.user || {};
   const [openPopover, setOpenPopover] = useState(false);
   if (!email) return null;

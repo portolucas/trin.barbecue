@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
   const body = await req.json();
-  const { name, description, date, ownerId } = body;
+  const { name, description, date, ownerId, observation } = body;
 
   try {
     await prisma.barbecue.create({
@@ -11,6 +11,7 @@ export async function POST(req: Request, res: Response) {
         name,
         description,
         date,
+        observation,
         owner: {
           connect: {
             id: ownerId,

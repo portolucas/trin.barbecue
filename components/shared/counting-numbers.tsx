@@ -2,17 +2,19 @@
 
 import { useEffect, useState } from "react";
 
+type Props = {
+  value: number;
+  className: string;
+  start?: number;
+  duration?: number;
+};
+
 export default function CountingNumbers({
   value,
   className,
   start = 0,
   duration = 800,
-}: {
-  value: number;
-  className: string;
-  start?: number;
-  duration?: number;
-}) {
+}: Props) {
   const [count, setCount] = useState(start);
 
   useEffect(() => {

@@ -1,19 +1,17 @@
+import { IBarbecueWithGuests, GuestPageParams } from "@/app/types";
 import CardGuests from "@/components/guests/card-guests";
 import Title from "@/components/layout/title";
 import prisma from "@/lib/prisma";
-import { Barbecue, Guest } from "@prisma/client";
 
 export default async function Page({
-  params,
-}: {
-  params: { barbecueId: string };
-}) {
+  params: { barbecueId },
+}: GuestPageParams) {
   async function getBarbecue() {
-    if (params.barbecueId) {
+    if (barbecueId) {
       const barbecue = await prisma.barbecue
         .findUnique({
           where: {
-            id: params.barbecueId,
+            id: barbecueId,
           },
           include: {
             guests: true,
@@ -28,8 +26,7 @@ export default async function Page({
     }
   }
 
-  const barbecue: (Barbecue & { guests: Guest[] }) | undefined | null =
-    await getBarbecue();
+  const barbecue: IBarbecueWithGuests | undefined | null = await getBarbecue();
 
   return (
     <>

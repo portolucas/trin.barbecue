@@ -47,3 +47,19 @@ export async function GET(req: Request) {
     return NextResponse.error();
   }
 }
+
+export async function PATCH(req: Request) {
+  const body = await req.json();
+  const { guestId } = body;
+  try {
+    const res = await prisma.guest.delete({
+      where: {
+        id: guestId,
+      },
+    });
+    return NextResponse.json({ res }, { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.error();
+  }
+}

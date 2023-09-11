@@ -5,19 +5,21 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 import useWindowSize from "@/lib/hooks/use-window-size";
 import Leaflet from "./leaflet";
 
+type Props = {
+  children: ReactNode;
+  content: ReactNode | string;
+  align?: "center" | "start" | "end";
+  openPopover: boolean;
+  setOpenPopover: Dispatch<SetStateAction<boolean>>;
+};
+
 export default function Popover({
   children,
   content,
   align = "center",
   openPopover,
   setOpenPopover,
-}: {
-  children: ReactNode;
-  content: ReactNode | string;
-  align?: "center" | "start" | "end";
-  openPopover: boolean;
-  setOpenPopover: Dispatch<SetStateAction<boolean>>;
-}) {
+}: Props) {
   const { isMobile, isDesktop } = useWindowSize();
   if (!isMobile && !isDesktop) return <>{children}</>;
   return (

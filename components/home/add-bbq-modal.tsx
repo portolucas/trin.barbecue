@@ -15,26 +15,25 @@ import { DateField } from "@mui/x-date-pickers/DateField";
 import { TextField } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
-import { Barbecue } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import dayjs from "dayjs";
 import styles from "../../app/base.module.css";
 import cx from "classnames";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { IBarbecue } from "@/app/types";
 
-const AddBbqModal = ({
-  showAddBbqModal,
-  setShowAddBbqModal,
-}: {
+type Props = {
   showAddBbqModal: boolean;
   setShowAddBbqModal: Dispatch<SetStateAction<boolean>>;
-}) => {
+};
+
+const AddBbqModal = ({ showAddBbqModal, setShowAddBbqModal }: Props) => {
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  interface AddBbqValues extends Partial<Barbecue> {}
+  interface AddBbqValues extends Partial<IBarbecue> {}
   const initialAddBbqValues: AddBbqValues = {
     name: "",
     description: "",
@@ -53,6 +52,7 @@ const AddBbqModal = ({
         body: JSON.stringify({
           name: values.name,
           description: values.description,
+          observation: values.observation,
           date: values.date,
           ownerId: session?.user?.id,
         }),
@@ -126,7 +126,7 @@ const AddBbqModal = ({
                     label="Observação"
                     id="filled-basic"
                     variant="filled"
-                    name="description"
+                    name="observation"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     size="small"

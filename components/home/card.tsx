@@ -1,21 +1,26 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useEffect, useMemo } from "react";
 import Guests from "../shared/icons/guests";
 import Money from "../shared/icons/money";
 import Link from "next/link";
 import { Barbecue, Guest } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
-export default function Card({
-  barbecue,
-  guests,
-}: {
+type Props = {
   barbecue: Barbecue;
   guests: Guest[];
-}) {
+};
+
+export default function Card({ barbecue, guests }: Props) {
+  const router = useRouter();
   const dateFormated = new Date(barbecue.date).toLocaleDateString("pt-BR");
 
-  const totalPay = useCallback(() => {
+  useEffect(() => {
+    router.refresh();
+  }, [router]);
+
+  const totalPay = useMemo(() => {
     const guestsPrice = guests?.reduce((acc, guest) => {
       if (guest?.payment) return acc + guest?.price;
       return acc;
@@ -49,7 +54,7 @@ export default function Card({
             </div>
             <div className="flex">
               <Money />
-              <p className="ml-3 -translate-y-1 text-left text-xl">{`R$ ${totalPay()}`}</p>
+              <p className="ml-3 -translate-y-1 text-left text-xl">{`R$ ${totalPay}`}</p>
             </div>
           </h2>
         </div>

@@ -9,28 +9,31 @@ import {
   useMemo,
 } from "react";
 import { Formik, Form } from "formik";
-import { TextField, Button } from "@mui/material";
+import { TextField } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
-import { Guest } from "@prisma/client";
 import styles from "../../app/base.module.css";
 import cx from "classnames";
 import Image from "next/image";
+import { AddGuestModalProps, IGuest } from "@/app/types";
+
+type Props = {
+  showAddGuestsModal: boolean;
+  setShowAddGuestsModal: Dispatch<SetStateAction<boolean>>;
+  barbecueId: string;
+  callback: () => Promise<void>;
+};
 
 const AddGuestsModal = ({
   showAddGuestsModal,
   setShowAddGuestsModal,
   barbecueId,
   callback,
-}: {
-  showAddGuestsModal: boolean;
-  setShowAddGuestsModal: Dispatch<SetStateAction<boolean>>;
-  barbecueId: string;
-  callback: () => void;
-}) => {
+}: Props) => {
   const [loading, setLoading] = useState(false);
 
-  interface AddGuestsValues extends Partial<Guest> {}
+  interface AddGuestsValues extends Partial<IGuest> {}
+
   const initialAddBbqValues: AddGuestsValues = {
     name: "",
     email: "",
@@ -51,10 +54,10 @@ const AddGuestsModal = ({
           price: values.price,
           barbecueId,
         }),
-      }).then(() => {
+      }).then(async () => {
         setLoading(false);
         setShowAddGuestsModal(false);
-        callback();
+        await callback();
       });
     } catch (error) {
       console.log(error);
@@ -92,7 +95,7 @@ const AddGuestsModal = ({
               await handleSubmit(values);
             }}
           >
-            {({ values, handleChange, handleBlur, setFieldValue }) => (
+            {({ handleChange, handleBlur }) => (
               <Form>
                 <TextField
                   style={{ padding: 10 }}
@@ -161,13 +164,7 @@ export function useAddGuestsModal() {
   const [showAddGuestsModal, setShowAddGuestsModal] = useState(false);
 
   const AddGuestsModalCallback = useCallback(
-    ({
-      barbecueId,
-      callback,
-    }: {
-      barbecueId: string;
-      callback: () => void;
-    }) => {
+    ({ barbecueId, callback }: AddGuestModalProps) => {
       return (
         <AddGuestsModal
           showAddGuestsModal={showAddGuestsModal}

@@ -4,8 +4,7 @@ import Title from "@/components/layout/title";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { Barbecue, Guest } from "@prisma/client";
-import { useSignInModal } from "@/components/layout/sign-in-modal";
+import { IBarbecueWithGuests } from "./types";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -30,14 +29,12 @@ export default async function Home() {
     }
   }
 
-  const barbecues: (Barbecue & { guests: Guest[] })[] | undefined =
-    await getBarbecues();
+  const barbecues: IBarbecueWithGuests[] | undefined = await getBarbecues();
 
   return (
     <>
       <Title>Agenda de Churras</Title>
       <div className="my-10 grid w-full max-w-screen-xl animate-fade-up grid-cols-1 gap-5 px-5 md:grid-cols-3 xl:px-0">
-        {!session}
         {barbecues?.map((barbecue) => (
           <Card
             key={barbecue.id}

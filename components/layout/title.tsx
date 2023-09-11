@@ -1,4 +1,6 @@
-export default function Title({ children }: { children: React.ReactNode }) {
+import { ReactChildren } from "@/app/types";
+
+export default function Title({ children }: ReactChildren) {
   return (
     <div className="z-10 w-full max-w-xl px-5 xl:px-0">
       <h1

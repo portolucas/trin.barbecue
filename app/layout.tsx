@@ -7,6 +7,7 @@ import Nav from "@/components/layout/nav";
 import Footer from "@/components/layout/footer";
 import { Suspense } from "react";
 import { NextAuthProvider } from "./providers";
+import { ReactChildren } from "./types";
 
 export const metadata = {
   title: "Trin.bbq",
@@ -15,11 +16,7 @@ export const metadata = {
   themeColor: "#FFF",
 };
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function RootLayout({ children }: ReactChildren) {
   return (
     <html lang="en">
       <body className={cx(sfPro.variable, inter.variable, raleway.variable)}>

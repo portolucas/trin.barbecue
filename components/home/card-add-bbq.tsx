@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import Churras from "../shared/icons/churras";
 import { useAddBbqModal } from "@/components/home/add-bbq-modal";
 import { useSignInModal } from "../layout/sign-in-modal";
@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 export default function CardAddBbq() {
   const { AddBbqModal, setShowAddBbqModal } = useAddBbqModal();
   const { SignInModal, setShowSignInModal } = useSignInModal();
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -18,10 +18,10 @@ export default function CardAddBbq() {
     }
   }, [status, setShowSignInModal]);
 
-  const handleOpenModal = () => {
-      if (status !== "unauthenticated") setShowAddBbqModal(true);
-      else setShowSignInModal(true);
-  };
+  const handleOpenModal = useCallback(() => {
+    if (status !== "unauthenticated") setShowAddBbqModal(true);
+    else setShowSignInModal(true);
+  }, [setShowAddBbqModal, setShowSignInModal, status]);
 
   return (
     <div

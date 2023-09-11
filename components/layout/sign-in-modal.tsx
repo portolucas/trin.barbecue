@@ -12,13 +12,12 @@ import Image from "next/image";
 import styles from "../../app/base.module.css";
 import cx from "classnames";
 
-const SignInModal = ({
-  showSignInModal,
-  setShowSignInModal,
-}: {
+type Props = {
   showSignInModal: boolean;
   setShowSignInModal: Dispatch<SetStateAction<boolean>>;
-}) => {
+};
+
+const SignInModal = ({ showSignInModal, setShowSignInModal }: Props) => {
   const [signInClicked, setSignInClicked] = useState(false);
 
   return (

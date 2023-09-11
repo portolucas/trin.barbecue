@@ -1,38 +1,36 @@
 "use client";
 
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Guests from "../shared/icons/guests";
 import Money from "../shared/icons/money";
-import { Barbecue, Guest } from "@prisma/client";
 import { useAddGuestsModal } from "@/components/guests/add-guests-modal";
-import { Button } from "@mui/material";
+import { Button, Box, Skeleton } from "@mui/material";
+import { IGuest, IBarbecue } from "@/app/types";
+import ClearIcon from "@mui/icons-material/Clear";
 
-export default function Card({
-  barbecue,
-  guests,
-}: {
-  barbecue: Barbecue;
-  guests: Guest[];
-}) {
-  const [guestsState, setGuests] = React.useState<Partial<Guest[]>>(
+type Props = {
+  barbecue: IBarbecue;
+  guests: IGuest[];
+};
+
+export default function CardGuests({ barbecue, guests }: Props) {
+  const [guestsState, setGuests] = useState<Partial<IGuest[]>>(
     sortGuests(guests),
   );
+  const [loading, setLoading] = useState(false);
   const { AddGuestsModal, setShowAddGuestsModal } = useAddGuestsModal();
+
   const dateFormated = new Date(barbecue.date).toLocaleDateString("pt-BR");
 
-  function sortGuests(guests: Guest[]) {
-    return guests.sort((a: Guest, b: Guest) => a.name.localeCompare(b.name));
+  function sortGuests(guests: IGuest[]) {
+    return guests.sort((a: IGuest, b: IGuest) => a.name.localeCompare(b.name));
   }
 
   async function changeGuestPayment(
     guestId: string | undefined,
     payment: boolean,
   ) {
-    const index = guestsState?.findIndex((guest) => guest?.id === guestId);
-    const newState = [...guestsState];
-    newState[index] = { ...newState[index], payment } as Guest;
-    setGuests(newState);
-
+    setLoading(true);
     try {
       const newGuests = await fetch("/[barbecueId]/guests/api", {
         method: "POST",
@@ -47,9 +45,11 @@ export default function Card({
       })
         .then((res) => res.json())
         .catch((err) => console.log(err));
-      if (newGuests.bbqGuests.length === guestsState.length)
-        setGuests(sortGuests(newGuests.bbqGuests));
+      setLoading(false);
+      const ordenedGuests = sortGuests(newGuests.bbqGuests);
+      setGuests(ordenedGuests);
     } catch (err) {
+      setLoading(false);
       console.log(err);
     }
   }
@@ -61,10 +61,38 @@ export default function Card({
       .then((res) => res.json())
       .catch((err) => console.log(err));
 
-    setGuests(sortGuests(guests.bbqGuests));
+    const ordenedGuests = sortGuests(guests.bbqGuests);
+    setGuests(ordenedGuests);
   }, [barbecue.id]);
 
-  const totalPay = useCallback(() => {
+  useEffect(() => {
+    getGuests();
+  }, [getGuests]);
+
+  const handleDeleteGuest = useCallback(
+    (guestId: string | undefined) => {
+      if (!guestId) return;
+      setLoading(true);
+      fetch("/[barbecueId]/guests/api", {
+        method: "PATCH",
+        body: JSON.stringify({
+          guestId,
+        }),
+      })
+        .then(async (res) => {
+          res.json();
+          await getGuests();
+          setLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.log(err);
+        });
+    },
+    [getGuests],
+  );
+
+  const totalPay = useMemo(() => {
     const guestsPrice = guestsState?.reduce((acc, guest) => {
       if (guest?.payment) return acc + guest?.price;
       return acc;
@@ -84,6 +112,12 @@ export default function Card({
             <p className="mt-3 font-bold font-semibold tracking-[-0.02em]">
               {barbecue.name}
             </p>
+            <p className="mt-3 text-base tracking-[-0.02em]">
+              {barbecue.description}
+            </p>
+            <p className="font-italic mt-1 text-sm italic tracking-[-0.02em]">
+              {barbecue.observation}
+            </p>
           </h2>
         </div>
         <div className="mx-auto mt-5 max-w-md p-10">
@@ -96,7 +130,7 @@ export default function Card({
             </div>
             <div className="flex">
               <Money />
-              <p className="ml-3 -translate-y-1 text-left text-xl">{`R$ ${totalPay()}`}</p>
+              <p className="ml-3 -translate-y-1 text-left text-xl">{`R$ ${totalPay}`}</p>
             </div>
           </h2>
         </div>
@@ -117,44 +151,58 @@ export default function Card({
       </div>
 
       <div className="grid divide-y divide-[#E5C231] pb-10 pl-10 pr-10">
-        {guestsState?.map((guest) => {
-          return (
-            <div key={guest?.id}>
-              <input
-                style={{
-                  backgroundImage: "none",
-                  borderColor: "#998220",
-                  color: "#FFD836",
-                }}
-                checked={guest?.payment}
-                id={guest?.id}
-                type="radio"
-                className="cursor-pointer"
-                onClick={(e) => changeGuestPayment(guest?.id, !guest?.payment)}
-              />
-              <span
-                className="ml-4 animate-fade-up bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-bold tracking-[-0.02em] text-transparent opacity-0 drop-shadow-sm md:leading-[2rem]"
-                style={{
-                  animationDelay: "0.15s",
-                  animationFillMode: "forwards",
-                }}
-              >
-                {guest?.name}
-              </span>
-              <span
-                className={`flex-end float-right ml-4 animate-fade-up bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-bold tracking-[-0.02em]  opacity-0 drop-shadow-sm md:leading-[2rem] ${
-                  guest?.payment && "line-through"
-                }`}
-                style={{
-                  animationDelay: "0.15s",
-                  animationFillMode: "forwards",
-                }}
-              >
-                {`R$ ${guest?.price}`}
-              </span>
-            </div>
-          );
-        })}
+        {loading && (
+          <Box sx={{ width: 300 }}>
+            {guestsState.map((guest) => {
+              return <Skeleton animation="wave" key={guest?.id} />;
+            })}
+          </Box>
+        )}
+        {!loading &&
+          guestsState?.map((guest) => {
+            return (
+              <div key={guest?.id}>
+                <ClearIcon
+                  className="mr-5 cursor-pointer"
+                  onClick={() => handleDeleteGuest(guest?.id)}
+                />
+                <input
+                  style={{
+                    backgroundImage: "none",
+                    borderColor: "#998220",
+                    color: "#FFD836",
+                  }}
+                  defaultChecked={guest?.payment}
+                  id={guest?.id}
+                  type="radio"
+                  className="cursor-pointer"
+                  onClick={(e) =>
+                    changeGuestPayment(guest?.id, !guest?.payment)
+                  }
+                />
+                <span
+                  className="ml-4 animate-fade-up bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-bold tracking-[-0.02em] text-transparent opacity-0 drop-shadow-sm md:leading-[2rem]"
+                  style={{
+                    animationDelay: "0.15s",
+                    animationFillMode: "forwards",
+                  }}
+                >
+                  {guest?.name}
+                </span>
+                <span
+                  className={`flex-end float-right ml-4 animate-fade-up bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-bold tracking-[-0.02em]  opacity-0 drop-shadow-sm md:leading-[2rem] ${
+                    guest?.payment && "line-through"
+                  }`}
+                  style={{
+                    animationDelay: "0.15s",
+                    animationFillMode: "forwards",
+                  }}
+                >
+                  {`R$ ${guest?.price}`}
+                </span>
+              </div>
+            );
+          })}
       </div>
     </div>
   );

@@ -12,15 +12,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import Leaflet from "./leaflet";
 import useWindowSize from "@/lib/hooks/use-window-size";
 
-export default function Modal({
-  children,
-  showModal,
-  setShowModal,
-}: {
+type Props = {
   children: React.ReactNode;
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
-}) {
+};
+
+export default function Modal({ children, showModal, setShowModal }: Props) {
   const desktopModalRef = useRef(null);
 
   const onKeyDown = useCallback(
