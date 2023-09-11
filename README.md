@@ -25,7 +25,7 @@ Este projeto foi desenvolvido para um tech-test da empresa Trinca.
 Front: Typescript, React, NextJS, TailwindCSS, Radix e MUI. BD: PostgresSQL e PrismaORM.
 
 ## Importante
-Para este projeto eu usei a nova versão do NextJS, chamamda App Router. Essa versão não recomenda mais o uso da pasta /pages para rotas, entre outras mudanças, como a separação de client components e server components.
+Para este projeto eu usei a nova versão do NextJS, chamada App Router. Essa versão não recomenda mais o uso da pasta /pages para rotas, entre outras mudanças, como a separação de client components e server components.
 
 ## Trin.BBQ
 
