@@ -46,7 +46,10 @@ export default function Modal({
           {isMobile && <Leaflet setShow={setShowModal}>{children}</Leaflet>}
           {isDesktop && (
             <>
-              <FocusTrap focusTrapOptions={{ initialFocus: false }}>
+              <FocusTrap
+                focusTrapOptions={{ initialFocus: false }}
+                active={false}
+              >
                 <motion.div
                   ref={desktopModalRef}
                   key="desktop-modal"

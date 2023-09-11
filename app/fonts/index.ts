@@ -6,6 +6,11 @@ export const sfPro = localFont({
   variable: "--font-sf",
 });
 
+export const raleway = localFont({
+    src: "./Raleway-VariableFont_wght.ttf",
+    variable: "--font-raleway",
+});
+
 export const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],

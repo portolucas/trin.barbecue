@@ -1,56 +1,59 @@
-import { ReactNode } from "react";
-import ReactMarkdown from "react-markdown";
-import Balancer from "react-wrap-balancer";
+"use client";
+
+import React, { useCallback } from "react";
+import Guests from "../shared/icons/guests";
+import Money from "../shared/icons/money";
+import Link from "next/link";
+import { Barbecue, Guest } from "@prisma/client";
 
 export default function Card({
-  title,
-  description,
-  demo,
-  large,
+  barbecue,
+  guests,
 }: {
-  title: string;
-  description: string;
-  demo: ReactNode;
-  large?: boolean;
+  barbecue: Barbecue;
+  guests: Guest[];
 }) {
+  const dateFormated = new Date(barbecue.date).toLocaleDateString("pt-BR");
+
+  const totalPay = useCallback(() => {
+    const guestsPrice = guests?.reduce((acc, guest) => {
+      if (guest?.payment) return acc + guest?.price;
+      return acc;
+    }, 0);
+    return guestsPrice;
+  }, [guests]);
+
   return (
-    <div
-      className={`relative col-span-1 h-96 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md ${
-        large ? "md:col-span-2" : ""
-      }`}
-    >
-      <div className="flex h-60 items-center justify-center">{demo}</div>
-      <div className="mx-auto max-w-md text-center">
-        <h2 className="bg-gradient-to-br from-black to-stone-500 bg-clip-text font-display text-xl font-bold text-transparent md:text-3xl md:font-normal">
-          <Balancer>{title}</Balancer>
-        </h2>
-        <div className="prose-sm -mt-2 leading-normal text-gray-500 md:prose">
-          <Balancer>
-            <ReactMarkdown
-              components={{
-                a: ({ node, ...props }) => (
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    {...props}
-                    className="font-medium text-gray-800 underline transition-colors"
-                  />
-                ),
-                code: ({ node, ...props }) => (
-                  <code
-                    {...props}
-                    // @ts-ignore (to fix "Received `true` for a non-boolean attribute `inline`." warning)
-                    inline="true"
-                    className="rounded-sm bg-gray-100 px-1 py-0.5 font-mono font-medium text-gray-800"
-                  />
-                ),
-              }}
-            >
-              {description}
-            </ReactMarkdown>
-          </Balancer>
+    <Link href={`${barbecue.id}/guests`}>
+      <div
+        className={`relative col-span-1 mb-10  cursor-pointer 
+      overflow-hidden bg-white shadow-md hover:shadow-lg`}
+      >
+        <div className="mx-auto max-w-md p-10 text-center">
+          <h2 className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-left font-display text-xl font-bold text-transparent md:text-3xl md:font-normal">
+            <p className="text-bold font-bold tracking-[-0.02em]">
+              {dateFormated}
+            </p>
+            <p className="mt-3 font-bold font-semibold tracking-[-0.02em]">
+              {barbecue.name}
+            </p>
+          </h2>
+        </div>
+        <div className="mx-auto max-w-md p-10">
+          <h2 className="flex-end flex justify-between">
+            <div className="flex">
+              <Guests />
+              <p className="font-size ml-3  -translate-y-1 text-left text-xl">
+                {guests.length}
+              </p>
+            </div>
+            <div className="flex">
+              <Money />
+              <p className="ml-3 -translate-y-1 text-left text-xl">{`R$ ${totalPay()}`}</p>
+            </div>
+          </h2>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -25,12 +25,12 @@ export default function NavBar({ session }: { session: Session | null }) {
           <Link href="/" className="flex items-center font-display text-2xl">
             <Image
               src="/logo.png"
-              alt="Precedent logo"
+              alt="Trin.bbq logo"
               width="30"
               height="30"
               className="mr-2 rounded-sm"
             ></Image>
-            <p>Precedent</p>
+            <p className="font-bold">BBQ</p>
           </Link>
           <div>
             {session ? (
@@ -40,7 +40,7 @@ export default function NavBar({ session }: { session: Session | null }) {
                 className="rounded-full border border-black bg-black p-1.5 px-4 text-sm text-white transition-all hover:bg-white hover:text-black"
                 onClick={() => setShowSignInModal(true)}
               >
-                Sign In
+                Entrar
               </button>
             )}
           </div>

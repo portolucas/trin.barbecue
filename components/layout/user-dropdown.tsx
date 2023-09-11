@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { signOut } from "next-auth/react";
-import { LayoutDashboard, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import Popover from "@/components/shared/popover";
 import Image from "next/image";
 import { Session } from "next-auth";
@@ -10,7 +10,6 @@ import { Session } from "next-auth";
 export default function UserDropdown({ session }: { session: Session }) {
   const { email, image } = session?.user || {};
   const [openPopover, setOpenPopover] = useState(false);
-
   if (!email) return null;
 
   return (
@@ -18,20 +17,6 @@ export default function UserDropdown({ session }: { session: Session }) {
       <Popover
         content={
           <div className="w-full rounded-md bg-white p-2 sm:w-56">
-            {/* <Link
-              className="flex items-center justify-start space-x-2 relative w-full rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
-              href="/dashboard"
-            >
-              <LayoutDashboard className="h-4 w-4" />
-              <p className="text-sm">Dashboard</p>
-            </Link> */}
-            <button
-              className="relative flex w-full cursor-not-allowed items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
-              disabled
-            >
-              <LayoutDashboard className="h-4 w-4" />
-              <p className="text-sm">Dashboard</p>
-            </button>
             <button
               className="relative flex w-full items-center justify-start space-x-2 rounded-md p-2 text-left text-sm transition-all duration-75 hover:bg-gray-100"
               onClick={() => signOut()}
