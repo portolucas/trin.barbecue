@@ -1,7 +1,11 @@
+<div align="center">
 <a href="https://trin-bbq.vercel.app/">
-  <img alt="Trin.BBQ" src="https://pasteboard.co/JVPBhyCzsViG.png">
+  
+  ![box title](https://github.com/portolucas/trin.barbecue/assets/33911520/45d24b1a-504b-4b97-ba17-56c33479e733)
+
   <h1 align="center">Trin.BBQ</h1>
 </a>
+</div>
 
 <p align="center">
   Agende churras com os seus amigos!
@@ -15,15 +19,25 @@
 
 ## Intro
 
-Este projeto foi desenvolvido para um tech-test da empresa Trinca. 
+Este projeto foi desenvolvido para um tech-test da empresa Trinca.
+
+## Tech Stack
+Front: Typescript, React, NextJS, TailwindCSS, Radix e MUI. BD: PostgresSQL e PrismaORM.
+
+## Importante
+Para este projeto eu usei a nova versão do NextJS, chamamda App Router. Essa versão não recomenda mais o uso da pasta /pages para rotas, entre outras mudanças, como a separação de client components e server components.
 
 ## Trin.BBQ
 
 Com o [trin.bbq](https://trin-bbq.vercel.app/), você pode agendar o churras com a galera, adicionar convidados e controlar pagamentos. Veja como é fácil no vídeo abaixo:
 
 
-[Veja funcionando!](https://trin-bbq.vercel.app/)
+[trin.bbq.mov](https://github.com/portolucas/trin.barbecue/assets/33911520/365adc47-5538-46df-8573-8629c0db1234)
 
+## No meu PC funciona, e em PRD também!
+[Acesse e agende o seu churras!](https://trin-bbq.vercel.app/)
+
+## RUN
 Para rodar o projeto localmente:
 
 ```bash
