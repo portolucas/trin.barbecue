@@ -1,5 +1,5 @@
 import CardGuests from "@/components/guests/card-guests";
-import Title from "@/components/home/title";
+import Title from "@/components/layout/title";
 import prisma from "@/lib/prisma";
 import { Barbecue, Guest } from "@prisma/client";
 

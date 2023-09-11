@@ -1,6 +1,6 @@
 import Card from "@/components/home/card";
 import CardAddBbq from "@/components/home/card-add-bbq";
-import Title from "@/components/home/title";
+import Title from "@/components/layout/title";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
