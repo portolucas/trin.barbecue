@@ -125,7 +125,7 @@ export default function CardGuests({ barbecue, guests }: Props) {
             <div className="flex">
               <Guests />
               <p className="font-size ml-3  -translate-y-1 text-left text-xl">
-                {guests.length}
+                {guestsState?.length}
               </p>
             </div>
             <div className="flex">
