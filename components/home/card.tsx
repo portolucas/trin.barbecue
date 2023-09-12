@@ -4,12 +4,12 @@ import React, { useEffect, useMemo } from "react";
 import Guests from "../shared/icons/guests";
 import Money from "../shared/icons/money";
 import Link from "next/link";
-import { Barbecue, Guest } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { IBarbecue, IGuest } from "@/app/types";
 
 type Props = {
-  barbecue: Barbecue;
-  guests: Guest[];
+  barbecue: IBarbecue;
+  guests: IGuest[];
 };
 
 export default function Card({ barbecue, guests }: Props) {

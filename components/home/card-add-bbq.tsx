@@ -13,7 +13,6 @@ export default function CardAddBbq() {
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      console.log(status);
       setShowSignInModal(true);
     }
   }, [status, setShowSignInModal]);
