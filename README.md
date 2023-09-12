@@ -1,7 +1,8 @@
 <div align="center">
 <a href="https://trin-bbq.vercel.app/">
   
-  ![box title](https://github.com/portolucas/trin.barbecue/assets/33911520/45d24b1a-504b-4b97-ba17-56c33479e733)
+  ![box title](https://github.com/portolucas/trin.barbecue/assets/33911520/2250c0e7-0f57-4d3f-9ab1-adf2a4e317ef)
+
 
   <h1 align="center">Trin.BBQ</h1>
 </a>
@@ -31,8 +32,8 @@ Para este projeto eu usei a nova versão do NextJS, chamada App Router. Essa ver
 
 Com o [trin.bbq](https://trin-bbq.vercel.app/), você pode agendar o churras com a galera, adicionar convidados e controlar pagamentos. Veja como é fácil no vídeo abaixo:
 
+[trin.bbq.movie](https://github.com/portolucas/trin.barbecue/assets/33911520/42c29aad-d459-4c3a-9217-2073c398b125)
 
-[trin.bbq.mov](https://github.com/portolucas/trin.barbecue/assets/33911520/365adc47-5538-46df-8573-8629c0db1234)
 
 ## No meu PC funciona, e em PRD também!
 [Acesse e agende o seu churras!](https://trin-bbq.vercel.app/)
